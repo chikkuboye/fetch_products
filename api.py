@@ -15,16 +15,15 @@ data = requests.get("https://dummyjson.com/products").text
 data_info = json.loads(data)
 
 l = []
-for i in data_info:
-    l.append(i)
-pr = l[0]
-dat = data_info[pr]
+
+dat = data_info["products"]
 for i in dat:
-#     print(i['title'],i['description'],i['price'],i['discountPercentage'],i['rating'],i['brand'],i['category'])
-     price = str(i['price'])
-     discountPercentage = str(i['discountPercentage'])
-     rating = str(i['rating'])
-     sql = "INSERT INTO `rating`(`title`, `Description`, `Price`, `Discount_per`, `Rating`, `Brand`, `Category`) VALUES ('"+i['title']+"','"+i['description']+"','"+price+"','"+discountPercentage+"','"+rating+"','"+i['brand']+"','"+i['category']+"')"
-     mycursor.execute(sql)
-     mydb.commit()
-     print('Inserted succesfully')
+    #print(i['title'],i['description'],i['price'],i['discountPercentage'],i['rating'],i['brand'],i['category'])
+    price = str(i['price'])
+    discountPercentage = str(i['discountPercentage'])
+    rating = str(i['rating'])
+    sql = "INSERT INTO `rating`(`title`, `Description`, `Price`, `Discount_per`, `Rating`, `Brand`, `Category`) VALUES (%s,%s,%s,%s,%s,%s,%s)"#('"+i['title']+"','"+i['description']+"','"+price+"','"+discountPercentage+"','"+rating+"','"+i['brand']+"','"+i['category']+"')"
+    data = (i['title'],i['description'],price,discountPercentage,rating,i['brand'],i['category'])
+    mycursor.execute(sql,data)
+    mydb.commit()
+    print('Inserted succesfully')
